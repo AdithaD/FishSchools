@@ -5,11 +5,12 @@ class_name FishAgent
 @export var range_of_orientation = 150
 @export var range_of_repulsion = 50
 
-@export var blind_spot_angle = PI /2
+@export var blind_spot_angle = PI / 2
+@export var max_noise_angle = PI / 4
 
 @export var attraction_scaling_factor = 1
 
-@export var move_speed = 5
+@export var move_speed = 15
 @export var turn_speed = 5
 
 @onready var simulation = get_node("/root/Simulation") as FishSimulation
@@ -33,7 +34,7 @@ func _process(delta):
 	
 func turn_towards(new_direction: Vector2, max_angle_in_radians: float) -> void:
 	# positive is clockwise , negative anti clockwise
-	var angle_from_current = direction.angle_to(new_direction)
+	var angle_from_current = direction.angle_to(new_direction) + randf() * max_noise_angle
 	
 	var turn_direction = sign(angle_from_current)
 	
