@@ -1,11 +1,19 @@
 [gd_scene load_steps=3 format=3 uid="uid://clhev6odivvgu"]
 
-[ext_resource type="Texture2D" uid="uid://b070ef3h10k4b" path="res://Resources/fish.png" id="1_6y3nl"]
 [ext_resource type="Script" path="res://PackedScenes/FishAgent.gd" id="1_fw4io"]
+[ext_resource type="Texture2D" uid="uid://coqorciu20kwf" path="res://Resources/fish2.png" id="2_b1whx"]
 
 [node name="Fish" type="Node2D"]
 script = ExtResource("1_fw4io")
+range_of_orientation = 80
+range_of_repulsion = 10
+blind_spot_angle = 0.393
+max_noise_angle = 0.393
+attraction_scaling_factor = 0.2
+move_speed = 20
+turn_speed = 7
 
 [node name="Sprite2d" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("1_6y3nl")
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("2_b1whx")
