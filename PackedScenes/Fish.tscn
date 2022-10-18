@@ -10,8 +10,8 @@ range_of_repulsion = 10
 blind_spot_angle = 0.393
 max_noise_angle = 0.393
 attraction_scaling_factor = 0.2
-move_speed = 20
-turn_speed = 7
+move_speed = 150.0
+turn_speed = 1.571
 
 [node name="Sprite2d" type="Sprite2D" parent="."]
 texture_filter = 1

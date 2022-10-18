@@ -10,8 +10,8 @@ class_name FishAgent
 
 @export var attraction_scaling_factor = 1.0
 
-@export var move_speed = 15
-@export var turn_speed = 5
+@export var move_speed = 15.0
+@export var turn_speed = 5.0
 
 @onready var simulation = get_node("/root/Simulation") as FishSimulation
 
@@ -25,9 +25,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+
 	var new_direction = calculate_next_direction()
 	
-	turn_towards(new_direction, turn_speed * delta)
+	turn_towards(simulation.apply_bounds_control(self, new_direction), turn_speed * delta)
 	
 	position += direction * move_speed * delta
 	pass
@@ -41,7 +42,6 @@ func turn_towards(new_direction: Vector2, max_angle_in_radians: float) -> void:
 	var clamped = min(abs(angle_from_current), max_angle_in_radians)
 	
 	direction = direction.rotated(clamped * turn_direction)
-	
 	$Sprite2d.rotation = direction.angle()
 
 func calculate_next_direction() -> Vector2:
