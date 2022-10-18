@@ -5,6 +5,7 @@ class_name FishAgent
 @export var range_of_orientation = 150
 @export var range_of_repulsion = 50
 
+@export var blind_spot_angle = PI /2
 
 @export var attraction_scaling_factor = 1
 
@@ -52,15 +53,18 @@ func calculate_next_direction() -> Vector2:
 	for agent in agents:
 		var displacement = get_displacement_to(agent)
 		
-		if displacement.length() < range_of_repulsion:
-			repulsion += -displacement
-			pass
-		elif displacement.length() < range_of_orientation:
-			orientation += agent.direction
-			pass
-		elif displacement.length() < range_of_attraction:
-			attraction += displacement
-			pass
+		## vision angle
+		if abs(displacement.angle_to(-direction)) > blind_spot_angle :
+			if displacement.length() < range_of_repulsion:
+				repulsion += -displacement
+				pass
+			elif displacement.length() < range_of_orientation:
+				orientation += agent.direction
+				pass
+			elif displacement.length() < range_of_attraction:
+				attraction += displacement
+				pass
+		
 			
 	var new_direction = Vector2(0,0)
 	
