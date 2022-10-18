@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://clhev6odivvgu"]
+
+[ext_resource type="Texture2D" uid="uid://b070ef3h10k4b" path="res://Resources/fish.png" id="1_6y3nl"]
+[ext_resource type="Script" path="res://PackedScenes/FishAgent.gd" id="1_fw4io"]
+
+[node name="Fish" type="Node2D"]
+script = ExtResource("1_fw4io")
+
+[node name="Sprite2d" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_6y3nl")
