@@ -4,15 +4,16 @@ class_name FishSimulation
 @export var amount_of_fish = 100
 @export var fish_agent : PackedScene
 
-@export var size : Vector2
+@export var should_apply_bounds = true
+@export var bounds_size : Vector2
 
 var bounds : Rect2i
 var agents : Array[FishAgent] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var bounds_pos = get_viewport_rect().size / 2 - size / 2
-	bounds = Rect2i(bounds_pos, size)
+	var bounds_pos = get_viewport_rect().size / 2 - bounds_size / 2
+	bounds = Rect2i(bounds_pos, bounds_size)
 	
 	print(bounds)
 	
@@ -32,7 +33,7 @@ func _ready():
 	pass # Replace with function body.
 
 func apply_bounds_control(fish, desired_direction) -> Vector2:
-	if not bounds.has_point(fish.position):
+	if not bounds.has_point(fish.position) and should_apply_bounds:
 		var center = Vector2(bounds.size / 2 + bounds.position)
 		
 		var adjustment_direction = (center - fish.position).normalized()
@@ -48,4 +49,5 @@ func get_agents() -> Array[FishAgent]:
 	return agents
 	
 func _draw():
-	draw_rect(bounds, Color.DARK_BLUE, false)
+	if should_apply_bounds:
+		draw_rect(bounds, Color.DARK_BLUE, false)

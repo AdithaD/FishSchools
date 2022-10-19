@@ -7,6 +7,6 @@
 script = ExtResource("1_180te")
 amount_of_fish = 300
 fish_agent = ExtResource("2_ya3k0")
-size = Vector2(1000, 800)
+bounds_size = Vector2(800, 800)
 
 [node name="Agents" type="Node2D" parent="."]
