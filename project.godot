@@ -17,11 +17,17 @@ _global_script_classes=[{
 "base": "Node2D",
 "class": &"FishSimulation",
 "language": &"GDScript",
-"path": "res://FishSimulation.gd"
+"path": "res://Scripts/FishSimulation.gd"
+}, {
+"base": "Resource",
+"class": &"FishStats",
+"language": &"GDScript",
+"path": "res://Scripts/FishStats.gd"
 }]
 _global_script_class_icons={
 "FishAgent": "",
-"FishSimulation": ""
+"FishSimulation": "",
+"FishStats": ""
 }
 
 [application]

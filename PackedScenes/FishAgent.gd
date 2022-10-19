@@ -1,17 +1,7 @@
 extends Node2D
 class_name FishAgent
 
-@export var range_of_attraction = 300
-@export var range_of_orientation = 150
-@export var range_of_repulsion = 50
-
-@export var blind_spot_angle = PI / 2
-@export var max_noise_angle = PI / 4
-
-@export var attraction_scaling_factor = 1.0
-
-@export var move_speed = 15.0
-@export var turn_speed = 5.0
+@export var stats : FishStats
 
 @onready var simulation = get_node("/root/Simulation") as FishSimulation
 
@@ -28,14 +18,14 @@ func _process(delta):
 
 	var new_direction = calculate_next_direction()
 	
-	turn_towards(simulation.apply_bounds_control(self, new_direction), turn_speed * delta)
+	turn_towards(simulation.apply_bounds_control(self, new_direction), stats.turn_speed * delta)
 	
-	position += direction * move_speed * delta
+	position += direction * stats.move_speed * delta
 	pass
 	
 func turn_towards(new_direction: Vector2, max_angle_in_radians: float) -> void:
 	# positive is clockwise , negative anti clockwise
-	var angle_from_current = direction.angle_to(new_direction) + randf_range(-1, 1) * max_noise_angle
+	var angle_from_current = direction.angle_to(new_direction) + randf_range(-1, 1) * stats.max_noise_angle
 	
 	var turn_direction = sign(angle_from_current)
 	
@@ -55,14 +45,14 @@ func calculate_next_direction() -> Vector2:
 		var displacement = get_displacement_to(agent)
 		
 		## vision angle
-		if abs(displacement.angle_to(-direction)) > blind_spot_angle :
-			if displacement.length() < range_of_repulsion:
+		if abs(displacement.angle_to(-direction)) > stats.blind_spot_angle :
+			if displacement.length() < stats.range_of_repulsion:
 				repulsion += -displacement
 				pass
-			elif displacement.length() < range_of_orientation:
+			elif displacement.length() < stats.range_of_orientation:
 				orientation += agent.direction
 				pass
-			elif displacement.length() < range_of_attraction:
+			elif displacement.length() < stats.range_of_attraction:
 				attraction += displacement
 				pass
 		
@@ -72,7 +62,7 @@ func calculate_next_direction() -> Vector2:
 	if repulsion.length() > 0:
 		new_direction = repulsion.normalized()
 	else:
-		new_direction = (orientation.normalized() + attraction_scaling_factor * attraction.normalized()).normalized()
+		new_direction = (orientation.normalized() + stats.attraction_scaling_factor * attraction.normalized()).normalized()
 	pass
 	
 	return new_direction
