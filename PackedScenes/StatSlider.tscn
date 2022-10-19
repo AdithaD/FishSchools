@@ -38,6 +38,7 @@ offset_top = -23.0
 offset_right = -3.0
 grow_horizontal = 2
 grow_vertical = 0
+dragger_visibility = 1
 
 [node name="Slider" type="HSlider" parent="HSplitContainer"]
 custom_minimum_size = Vector2i(150, 0)
