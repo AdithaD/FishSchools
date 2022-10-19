@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dbhxp0lfmuhv0"]
+
+[ext_resource type="Script" path="res://Scripts/FishStats.gd" id="1_l7k5b"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_l7k5b")
+range_of_attraction = 300
+range_of_orientation = 150
+range_of_repulsion = 50
+blind_spot_angle = 1.5708
+max_noise_angle = 0.785398
+attraction_scaling_factor = 1.0
+move_speed = 75.0
+turn_speed = 1.571
