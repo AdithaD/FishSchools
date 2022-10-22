@@ -59,4 +59,5 @@ func _on_simulation_end_step():
 	$Metrics/PanelContainer/COMMetricChart.add_value(simulation.calculate_avg_dist_to_com_metric())
 	$Metrics/PanelContainer2/VecDivergeChart.add_value(simulation.calculate_vector_divergence_metric())
 	$Metrics/PanelContainer3/LocalVecDivergeChart.add_value(simulation.calculate_local_vector_divergence_metric())
+	$Metrics/PanelContainer4/SwirlingChart.add_value(simulation.calculate_swirling_metric())
 	pass # Replace with function body.

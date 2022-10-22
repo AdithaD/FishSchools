@@ -90,7 +90,7 @@ func calculate_vector_divergence_metric() -> float:
 
 func calculate_local_vector_divergence_metric() -> float:
 	var sample_size = round(amount_of_fish * 0.1)
-	var neighbour_sample_size = ceil(amount_of_fish * 0.01)
+	var neighbour_sample_size = ceil(amount_of_fish * 0.1)
 	
 	var total_count = 0
 	var avg_dot = 0
@@ -106,16 +106,30 @@ func calculate_local_vector_divergence_metric() -> float:
 				break
 		
 		for direction in neighbours_directions:
-			avg_dot += i.direction.dot(direction)
+			avg_dot += abs(i.direction.dot(direction))
 			
 		total_count += len(neighbours_directions)
 		
 	return abs(avg_dot) / total_count
 
-
+func calculate_swirling_metric() -> float:
+	var com : Vector2 = Vector2(0,0)
+	
+	for i in agents:
+		com += i.position
+		
+	com /= len(agents)
+	
+	var avg_dot = 0.0
+	
+	for i in agents:
+		avg_dot += abs(i.direction.dot((i.position - com).normalized()))
+	
+	print( abs(avg_dot / len(agents)))
+	return abs(avg_dot / len(agents))
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-
+	
 	
 	if current_time < time_duration and not is_discrete_time_simulation:
 		current_time += delta * time_scale
@@ -133,6 +147,16 @@ func get_agents() -> Array[FishAgent]:
 func _draw():
 	if should_apply_bounds:
 		draw_rect(bounds, Color.DARK_BLUE, false)
+	
+	var com : Vector2 = Vector2(0,0)
+	
+	for i in agents:
+		com += i.position
+		
+	com /= len(agents)
+	
+	draw_circle(com, 5, Color.DARK_ORANGE)
+	
 
 
 func _on_timer_timeout():
@@ -141,6 +165,7 @@ func _on_timer_timeout():
 			i.step(discrete_time_step)
 		
 		emit_signal("end_step")	
+		queue_redraw()
 		current_step += 1
 		
 		# print("AVG DIST TO COM: {0}, AVG DOT FROM AVG DIR: {1}".format([calculate_avg_dist_to_com_metric(),calculate_vector_divergence_metric()]))
