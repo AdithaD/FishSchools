@@ -22,6 +22,8 @@ var agents : Array[FishAgent] = []
 var current_step = 0
 var current_time = 0
 
+signal end_step
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var bounds_pos = get_viewport_rect().size / 2 - bounds_size / 2
@@ -74,14 +76,55 @@ func calculate_avg_dist_to_com_metric() -> float:
 	return sum / len(agents)
 	pass
 	
+func calculate_vector_divergence_metric() -> float:
+	var avg_vector = Vector2(0,0)
+	
+	for i in agents:
+		avg_vector = (avg_vector + i.direction).normalized()
+	
+	var avg_dot = 0
+	for i in agents:
+		avg_dot += avg_vector.dot(i.direction)
+		
+	return abs(avg_dot) / len(agents)
+
+func calculate_local_vector_divergence_metric() -> float:
+	var sample_size = round(amount_of_fish * 0.1)
+	var neighbour_sample_size = ceil(amount_of_fish * 0.01)
+	
+	var total_count = 0
+	var avg_dot = 0
+	
+	for i in agents.slice(0, sample_size):
+		var neighbours_directions : Array[Vector2] = []
+		for j in agents:
+			if i != j:
+				if i.position.distance_to(j.position) < fish_stats.range_of_orientation:
+					neighbours_directions.append(j.direction)
+			
+			if len(neighbours_directions) >= neighbour_sample_size:
+				break
+		
+		for direction in neighbours_directions:
+			avg_dot += i.direction.dot(direction)
+			
+		total_count += len(neighbours_directions)
+		
+	return abs(avg_dot) / total_count
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	current_time += delta * time_scale
+
 	
-	if current_time < time_duration:
+	if current_time < time_duration and not is_discrete_time_simulation:
+		current_time += delta * time_scale
 		for i in agents:
 			i.step(delta * time_scale)
+		
+		emit_signal("end_step")	
+		# print("AVG DIST TO COM: {0}, AVG DOT FROM AVG DIR: {1}".format([calculate_avg_dist_to_com_metric(),calculate_vector_divergence_metric()]))
+		
 		pass
 	
 func get_agents() -> Array[FishAgent]:
@@ -93,9 +136,13 @@ func _draw():
 
 
 func _on_timer_timeout():
-	if not current_step > number_of_steps:
+	if current_step < number_of_steps:
 		for i in agents:
-			i.step(discrete_time_step * time_scale)
-			current_step += 1
+			i.step(discrete_time_step)
 		
+		emit_signal("end_step")	
+		current_step += 1
+		
+		# print("AVG DIST TO COM: {0}, AVG DOT FROM AVG DIR: {1}".format([calculate_avg_dist_to_com_metric(),calculate_vector_divergence_metric()]))
+			
 	pass # Replace with function body.
