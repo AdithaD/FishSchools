@@ -12,10 +12,8 @@ func _ready():
 	$Sprite2d.rotation = direction.angle()
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-
+	
+func step(delta):
 	var new_direction = calculate_next_direction()
 	
 	turn_towards(simulation.apply_bounds_control(self, new_direction), stats.turn_speed * delta)

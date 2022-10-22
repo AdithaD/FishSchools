@@ -12,6 +12,9 @@ amount_of_fish = 300
 fish_agent = ExtResource("2_ya3k0")
 fish_stats = ExtResource("3_hhu37")
 bounds_size = Vector2(800, 800)
+time_scale = 5
+is_discrete_time_simulation = false
+discrete_time_step = 0.5
 
 [node name="Agents" type="Node2D" parent="."]
 
@@ -21,12 +24,13 @@ anchors_preset = 0
 script = ExtResource("3_ro7wh")
 
 [node name="SidePanel" type="Control" parent="ControlGUI"]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 0
 offset_right = 224.0
 offset_bottom = 327.0
 
 [node name="Panel" type="Panel" parent="ControlGUI/SidePanel"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,6 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ControlGUI/SidePanel"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,159 +48,99 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="RORSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 property_name = "range_of_repulsion"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider" index="0"]
-layout_mode = 3
 text = "Range of Repulsion
 "
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider" index="1"]
-layout_mode = 3
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider/HSplitContainer" index="0"]
-layout_mode = 3
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider/HSplitContainer" index="1"]
-layout_mode = 3
-
 [node name="ROOSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 offset_top = 39.0
 offset_bottom = 74.0
 property_name = "range_of_orientation"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider" index="0"]
-layout_mode = 3
 text = "Range of Orientation
 "
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider" index="1"]
-layout_mode = 3
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider/HSplitContainer" index="0"]
-layout_mode = 3
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider/HSplitContainer" index="1"]
-layout_mode = 3
-
 [node name="ROASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 offset_top = 78.0
 offset_bottom = 113.0
 property_name = "range_of_attraction"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider" index="0"]
-layout_mode = 3
 text = "Range of Attraction
 "
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider" index="1"]
-layout_mode = 3
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider/HSplitContainer" index="0"]
-layout_mode = 3
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider/HSplitContainer" index="1"]
-layout_mode = 3
-
 [node name="ASFSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 offset_top = 117.0
 offset_bottom = 152.0
 property_name = "attraction_scaling_factor"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider" index="0"]
-layout_mode = 3
 text = "Attraction Scaling Factor"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider" index="1"]
-layout_mode = 3
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider/HSplitContainer" index="0"]
-layout_mode = 3
 min_value = 0.1
 step = 0.0
 value = 0.1
 exp_edit = true
 
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider/HSplitContainer" index="1"]
-layout_mode = 3
-
 [node name="MoveSpeedSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 offset_top = 156.0
 offset_bottom = 191.0
 property_name = "move_speed"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider" index="0"]
-layout_mode = 3
 text = "Move Speed"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider" index="1"]
-layout_mode = 3
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider/HSplitContainer" index="0"]
-layout_mode = 3
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider/HSplitContainer" index="1"]
-layout_mode = 3
-
 [node name="TurnSpeedSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 offset_top = 195.0
 offset_bottom = 230.0
 property_name = "turn_speed"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider" index="0"]
-layout_mode = 3
 text = "Turn Speed"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider" index="1"]
-layout_mode = 3
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider/HSplitContainer" index="0"]
-layout_mode = 3
 max_value = 6.283
 step = 0.0
 
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider/HSplitContainer" index="1"]
-layout_mode = 3
-
 [node name="BSASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 offset_top = 234.0
 offset_bottom = 269.0
 property_name = "blind_spot_angle"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider" index="0"]
-layout_mode = 3
 text = "Blind Spot Angle"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider" index="1"]
-layout_mode = 3
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider/HSplitContainer" index="0"]
-layout_mode = 3
 max_value = 3.142
 step = 0.0
 
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider/HSplitContainer" index="1"]
-layout_mode = 3
-
 [node name="MNASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
+layout_mode = 2
 offset_top = 273.0
 offset_bottom = 308.0
 property_name = "max_noise_angle"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider" index="0"]
-layout_mode = 3
 text = "Max Nosie Angle"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider" index="1"]
-layout_mode = 3
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider/HSplitContainer" index="0"]
-layout_mode = 3
 max_value = 6.283
 step = 0.0
 
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider/HSplitContainer" index="1"]
-layout_mode = 3
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 
 [editable path="ControlGUI/SidePanel/VBoxContainer/RORSlider"]
 [editable path="ControlGUI/SidePanel/VBoxContainer/ROOSlider"]

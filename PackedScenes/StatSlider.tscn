@@ -14,7 +14,6 @@ offset_bottom = 35.0
 script = ExtResource("1_3nt8t")
 
 [node name="GroupTitle" type="Label" parent="."]
-layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -28,7 +27,6 @@ label_settings = SubResource("LabelSettings_1sl3l")
 horizontal_alignment = 1
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
-layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -42,7 +40,6 @@ dragger_visibility = 1
 
 [node name="Slider" type="HSlider" parent="HSplitContainer"]
 custom_minimum_size = Vector2i(150, 0)
-layout_mode = 2
 offset_top = 7.0
 offset_right = 150.0
 offset_bottom = 23.0
@@ -54,7 +51,6 @@ tick_count = 2
 ticks_on_borders = true
 
 [node name="ValueText" type="Label" parent="HSplitContainer"]
-layout_mode = 2
 offset_left = 162.0
 offset_right = 214.0
 offset_bottom = 23.0

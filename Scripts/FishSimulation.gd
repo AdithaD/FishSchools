@@ -7,9 +7,20 @@ class_name FishSimulation
 
 @export var should_apply_bounds = true
 @export var bounds_size : Vector2
+@export var time_duration = 100.0
+@export var time_scale = 1
+
+@export_group("Discrete Time")
+@export var is_discrete_time_simulation = true
+@export var discrete_time_step = 0.1
+@export var number_of_steps = 100
+
 
 var bounds : Rect2i
 var agents : Array[FishAgent] = []
+
+var current_step = 0
+var current_time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,6 +44,10 @@ func _ready():
 		new_fish.direction = new_direction
 		
 		$Agents.add_child(new_fish)
+		
+	if is_discrete_time_simulation:
+		$Timer.wait_time = discrete_time_step
+		$Timer.start()
 	pass # Replace with function body.
 
 func apply_bounds_control(fish, desired_direction) -> Vector2:
@@ -44,9 +59,30 @@ func apply_bounds_control(fish, desired_direction) -> Vector2:
 	else :
 		return desired_direction
 
+func calculate_avg_dist_to_com_metric() -> float:
+	var com : Vector2 = Vector2(0,0)
+	
+	for i in agents:
+		com += i.position
+		
+	com /= len(agents)
+	
+	var sum = 0
+	for i in agents:
+		sum += com.distance_to(i .position)
+	
+	return sum / len(agents)
+	pass
+	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	current_time += delta * time_scale
+	
+	if current_time < time_duration:
+		for i in agents:
+			i.step(delta * time_scale)
+		pass
 	
 func get_agents() -> Array[FishAgent]:
 	return agents
@@ -54,3 +90,12 @@ func get_agents() -> Array[FishAgent]:
 func _draw():
 	if should_apply_bounds:
 		draw_rect(bounds, Color.DARK_BLUE, false)
+
+
+func _on_timer_timeout():
+	if not current_step > number_of_steps:
+		for i in agents:
+			i.step(discrete_time_step * time_scale)
+			current_step += 1
+		
+	pass # Replace with function body.
