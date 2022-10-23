@@ -19,10 +19,21 @@ class_name FishSimulation
 var bounds : Rect2i
 var agents : Array[FishAgent] = []
 
+var metrics = {
+	"avg_dist_to_com": [],
+	"global_vec_divergence": [],
+	"local_vec_divergence": [],
+	"swirling_factor": [],
+}
+
 var current_step = 0
 var current_time = 0
 
-signal end_step
+var deltas = []
+
+var ended = false
+
+signal end_step(avg_dist_to_com, global_vec_divergence, local_vec_divergence, swirling_factor)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -125,19 +136,20 @@ func calculate_swirling_metric() -> float:
 	for i in agents:
 		avg_dot += abs(i.direction.dot((i.position - com).normalized()))
 	
-	print( abs(avg_dot / len(agents)))
+
 	return abs(avg_dot / len(agents))
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	
-	
-	if current_time < time_duration and not is_discrete_time_simulation:
-		current_time += delta * time_scale
-		for i in agents:
-			i.step(delta * time_scale)
-		
-		emit_signal("end_step")	
-		# print("AVG DIST TO COM: {0}, AVG DOT FROM AVG DIR: {1}".format([calculate_avg_dist_to_com_metric(),calculate_vector_divergence_metric()]))
+func _process(delta):	
+	if not ended and not is_discrete_time_simulation:
+		if current_time < time_duration:
+			current_time += delta * time_scale
+			for i in agents:
+				i.step(delta * time_scale)
+			
+			emit_signal("end_step")	
+			deltas.append(delta)
+		else:
+			end_simulation()
 		
 		pass
 	
@@ -157,17 +169,66 @@ func _draw():
 	
 	draw_circle(com, 5, Color.DARK_ORANGE)
 	
+func on_end_step():
+	var avg_dist_to_com = calculate_avg_dist_to_com_metric()
+	var global_vec_divergence = calculate_vector_divergence_metric()
+	var local_vec_divergence = calculate_local_vector_divergence_metric()
+	var swirling_factor = calculate_swirling_metric()
+	
+	metrics["avg_dist_to_com"].append(avg_dist_to_com)
+	metrics["global_vec_divergence"].append(global_vec_divergence)
+	metrics["local_vec_divergence"].append(local_vec_divergence)
+	metrics["swirling_factor"].append(swirling_factor)
 
+	emit_signal("end_step", avg_dist_to_com, global_vec_divergence, local_vec_divergence, swirling_factor)	
+	queue_redraw()
+	current_step += 1
+	pass
 
 func _on_timer_timeout():
-	if current_step < number_of_steps:
-		for i in agents:
-			i.step(discrete_time_step)
-		
-		emit_signal("end_step")	
-		queue_redraw()
-		current_step += 1
-		
-		# print("AVG DIST TO COM: {0}, AVG DOT FROM AVG DIR: {1}".format([calculate_avg_dist_to_com_metric(),calculate_vector_divergence_metric()]))
+	if not ended:
+		if current_step < number_of_steps:
+			for i in agents:
+				i.step(discrete_time_step)
 			
-	pass # Replace with function body.
+			on_end_step()
+		else:
+			end_simulation()
+		pass # Replace with function body.
+
+func end_simulation():
+	print("Ending simulation...")
+	$Timer.stop()
+	
+	export_simulation_data()
+	ended = true
+
+func export_simulation_data() -> void:
+	var time_data ={}
+	
+	if is_discrete_time_simulation:
+		time_data = { "time_step": discrete_time_step, "number_of_steps": number_of_steps }
+		pass
+	else:
+		time_data = { "deltas": deltas, "time_scale" : time_scale }
+		pass
+	
+	
+	var simulation_data = {
+		"time_control" : {
+			"type": "discrete" if is_discrete_time_simulation else "continuous",
+			"time_data": time_data
+		},
+		"amount_of_fish": amount_of_fish,
+		"fish_stats": fish_stats.to_json(),
+		"metrics" : metrics
+	}
+	var document_name = "user://experiement_results_%s.json" % Time.get_time_string_from_system().replace(":","_")
+	print(document_name)
+	var f = FileAccess.open(document_name, FileAccess.WRITE)
+	
+	f.store_string(JSON.stringify(simulation_data))
+	print("Writing simulation data to %s" % f.get_path_absolute())
+	f.flush()
+	pass
+	

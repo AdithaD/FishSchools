@@ -55,9 +55,9 @@ func _on_turn_speed_slider_value_changed(value):
 	pass # Replace with function body.
 
 
-func _on_simulation_end_step():
-	$Metrics/PanelContainer/COMMetricChart.add_value(simulation.calculate_avg_dist_to_com_metric())
-	$Metrics/PanelContainer2/VecDivergeChart.add_value(simulation.calculate_vector_divergence_metric())
-	$Metrics/PanelContainer3/LocalVecDivergeChart.add_value(simulation.calculate_local_vector_divergence_metric())
-	$Metrics/PanelContainer4/SwirlingChart.add_value(simulation.calculate_swirling_metric())
+func _on_simulation_end_step( avg_dist_to_com, global_vec_divergence, local_vec_divergence, swirling_factor):
+	$Metrics/PanelContainer/COMMetricChart.add_value(avg_dist_to_com)
+	$Metrics/PanelContainer2/VecDivergeChart.add_value(global_vec_divergence)
+	$Metrics/PanelContainer3/LocalVecDivergeChart.add_value(local_vec_divergence)
+	$Metrics/PanelContainer4/SwirlingChart.add_value(swirling_factor)
 	pass # Replace with function body.

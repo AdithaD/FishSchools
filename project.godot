@@ -12,7 +12,7 @@ _global_script_classes=[{
 "base": "Node2D",
 "class": &"FishAgent",
 "language": &"GDScript",
-"path": "res://PackedScenes/FishAgent.gd"
+"path": "res://Scripts/FishAgent.gd"
 }, {
 "base": "Node2D",
 "class": &"FishSimulation",
