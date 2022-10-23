@@ -101,7 +101,7 @@ func calculate_vector_divergence_metric() -> float:
 
 func calculate_local_vector_divergence_metric() -> float:
 	var sample_size = round(amount_of_fish * 0.1)
-	var neighbour_sample_size = ceil(amount_of_fish * 0.1)
+	var neighbour_sample_size = ceil(amount_of_fish * 0.05)
 	
 	var total_count = 0
 	var avg_dot = 0
@@ -117,11 +117,11 @@ func calculate_local_vector_divergence_metric() -> float:
 				break
 		
 		for direction in neighbours_directions:
-			avg_dot += abs(i.direction.dot(direction))
+			avg_dot += (i.direction.dot(direction) + 1) / 2
 			
 		total_count += len(neighbours_directions)
 		
-	return abs(avg_dot) / total_count
+	return avg_dot / total_count
 
 func calculate_swirling_metric() -> float:
 	var com : Vector2 = Vector2(0,0)
