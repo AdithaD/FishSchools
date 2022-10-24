@@ -4,7 +4,7 @@ var simulation : FishSimulation
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	simulation = get_node("/root/Simulation")
+	simulation = find_parent("Simulation")
 	
 	size = get_viewport_rect().size
 	pass # Replace with function body.

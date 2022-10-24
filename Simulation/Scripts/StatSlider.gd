@@ -2,7 +2,7 @@ extends Control
 
 @export var property_name = ""
 
-@onready var simulation : FishSimulation = get_node("/root/Simulation")
+@onready var simulation : FishSimulation = find_parent("Simulation")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

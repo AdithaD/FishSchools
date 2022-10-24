@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3ut323xpku1j"]
+
+[ext_resource type="Script" path="res://Scripts/Experiment.gd" id="1_6nadw"]
+[ext_resource type="Resource" uid="uid://bo8oqkf63qevn" path="res://Resources/Experiments/Experiment2.tres" id="2_7f7jk"]
+
+[node name="Experiment" type="Node2D"]
+script = ExtResource("1_6nadw")
+experiment_stats = ExtResource("2_7f7jk")
+experiment_name = "FishSchools"

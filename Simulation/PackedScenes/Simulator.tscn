@@ -1,20 +1,20 @@
 [gd_scene load_steps=7 format=3 uid="uid://cjs17lq1ycowq"]
 
-[ext_resource type="Script" path="res://Scripts/FishSimulation.gd" id="1_180te"]
-[ext_resource type="PackedScene" uid="uid://cwo1vflwk1dxk" path="res://PackedScenes/Fish.tscn" id="2_ya3k0"]
-[ext_resource type="Resource" uid="uid://dbhxp0lfmuhv0" path="res://Resources/FishStats/DefaultFishStats.tres" id="3_hhu37"]
-[ext_resource type="Script" path="res://Scripts/ControlGUI.gd" id="3_ro7wh"]
-[ext_resource type="PackedScene" path="res://PackedScenes/StatSlider.tscn" id="5_amd6w"]
-[ext_resource type="Script" path="res://Scripts/Chart.gd" id="5_xk5dx"]
+[ext_resource type="Script" path="res://Scripts/FishSimulation.gd" id="1_mskyh"]
+[ext_resource type="PackedScene" uid="uid://cwo1vflwk1dxk" path="res://PackedScenes/Fish.tscn" id="2_b248h"]
+[ext_resource type="Resource" uid="uid://dbhxp0lfmuhv0" path="res://Resources/FishStats/DefaultFishStats.tres" id="3_lihjg"]
+[ext_resource type="Script" path="res://Scripts/ControlGUI.gd" id="4_62s7w"]
+[ext_resource type="Script" path="res://Scripts/Chart.gd" id="5_o5jso"]
+[ext_resource type="PackedScene" path="res://PackedScenes/StatSlider.tscn" id="6_eyy6u"]
 
 [node name="Simulation" type="Node2D"]
-script = ExtResource("1_180te")
+script = ExtResource("1_mskyh")
 amount_of_fish = 300
-fish_agent = ExtResource("2_ya3k0")
-fish_stats = ExtResource("3_hhu37")
+fish_agent = ExtResource("2_b248h")
+fish_stats = ExtResource("3_lihjg")
 bounds_size = Vector2(800, 800)
 time_duration = 1.0
-number_of_steps = 1000
+number_of_steps = 10
 
 [node name="Agents" type="Node2D" parent="."]
 
@@ -35,10 +35,9 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 auto_translate = false
-script = ExtResource("3_ro7wh")
+script = ExtResource("4_62s7w")
 
 [node name="Metrics" type="HBoxContainer" parent="ControlGUI"]
-layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -51,95 +50,123 @@ grow_vertical = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="ControlGUI/Metrics"]
 custom_minimum_size = Vector2i(200, 200)
-layout_mode = 2
 offset_right = 200.0
 offset_bottom = 200.0
 
 [node name="COMMetricChart" type="Control" parent="ControlGUI/Metrics/PanelContainer"]
-custom_minimum_size = Vector2i(180, 180)
-layout_mode = 2
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 3
 anchors_preset = 0
 offset_left = 10.0
-offset_top = 10.0
 offset_right = 190.0
-offset_bottom = 190.0
+offset_bottom = 140.0
 size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("5_xk5dx")
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
 colour = Color(0.788235, 0.313726, 0.658824, 1)
+
+[node name="StdErrorLabel" type="Label" parent="ControlGUI/Metrics/PanelContainer/COMMetricChart"]
+offset_left = -10.0
+offset_top = 177.0
+offset_right = -9.0
+offset_bottom = 200.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
 
 [node name="PanelContainer2" type="PanelContainer" parent="ControlGUI/Metrics"]
 visible = false
 custom_minimum_size = Vector2i(200, 200)
-layout_mode = 2
 offset_left = 204.0
 offset_right = 404.0
 offset_bottom = 200.0
 
 [node name="VecDivergeChart" type="Control" parent="ControlGUI/Metrics/PanelContainer2"]
-custom_minimum_size = Vector2i(180, 180)
-layout_mode = 2
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 3
 anchors_preset = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 190.0
 offset_bottom = 190.0
 size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("5_xk5dx")
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
 max_y_value = 1
 colour = Color(0.403922, 0.752941, 0.854902, 1)
 
+[node name="StdErrorLabel" type="Label" parent="ControlGUI/Metrics/PanelContainer2/VecDivergeChart"]
+offset_left = -10.0
+offset_top = 167.0
+offset_right = -9.0
+offset_bottom = 190.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
 [node name="PanelContainer3" type="PanelContainer" parent="ControlGUI/Metrics"]
 custom_minimum_size = Vector2i(200, 200)
-layout_mode = 2
 offset_left = 204.0
 offset_right = 404.0
 offset_bottom = 200.0
 
 [node name="LocalVecDivergeChart" type="Control" parent="ControlGUI/Metrics/PanelContainer3"]
-custom_minimum_size = Vector2i(180, 180)
-layout_mode = 2
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 3
 anchors_preset = 0
 offset_left = 10.0
-offset_top = 10.0
 offset_right = 190.0
-offset_bottom = 190.0
+offset_bottom = 140.0
 size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("5_xk5dx")
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
 max_y_value = 1
 colour = Color(0.741176, 0.776471, 0, 1)
 
+[node name="StdErrorLabel" type="Label" parent="ControlGUI/Metrics/PanelContainer3/LocalVecDivergeChart"]
+offset_left = -10.0
+offset_top = 177.0
+offset_right = -9.0
+offset_bottom = 200.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
 [node name="PanelContainer4" type="PanelContainer" parent="ControlGUI/Metrics"]
 custom_minimum_size = Vector2i(200, 200)
-layout_mode = 2
 offset_left = 408.0
 offset_right = 608.0
 offset_bottom = 200.0
 
 [node name="SwirlingChart" type="Control" parent="ControlGUI/Metrics/PanelContainer4"]
-custom_minimum_size = Vector2i(180, 180)
-layout_mode = 2
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 3
 anchors_preset = 0
 offset_left = 10.0
-offset_top = 10.0
 offset_right = 190.0
-offset_bottom = 190.0
+offset_bottom = 140.0
 size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("5_xk5dx")
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
 max_y_value = 1
 colour = Color(0.917647, 0.686275, 0.486275, 1)
 
+[node name="StdErrorLabel" type="Label" parent="ControlGUI/Metrics/PanelContainer4/SwirlingChart"]
+offset_left = -10.0
+offset_top = 177.0
+offset_right = -9.0
+offset_bottom = 200.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
 [node name="SidePanel" type="Control" parent="ControlGUI"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 0
 offset_right = 224.0
 offset_bottom = 327.0
 
 [node name="Panel" type="Panel" parent="ControlGUI/SidePanel"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -147,7 +174,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ControlGUI/SidePanel"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -156,168 +182,88 @@ offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="RORSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="RORSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 property_name = "range_of_repulsion"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider" index="0"]
-layout_mode = 1
 text = "Range of Repulsion
 "
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider" index="1"]
-layout_mode = 1
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider/HSplitContainer" index="0"]
-layout_mode = 2
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/RORSlider/HSplitContainer" index="1"]
-layout_mode = 2
-
-[node name="ROOSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="ROOSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 offset_top = 39.0
 offset_bottom = 74.0
 property_name = "range_of_orientation"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider" index="0"]
-layout_mode = 1
 text = "Range of Orientation
 "
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider" index="1"]
-layout_mode = 1
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider/HSplitContainer" index="0"]
-layout_mode = 2
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/ROOSlider/HSplitContainer" index="1"]
-layout_mode = 2
-
-[node name="ROASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="ROASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 offset_top = 78.0
 offset_bottom = 113.0
 property_name = "range_of_attraction"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider" index="0"]
-layout_mode = 1
 text = "Range of Attraction
 "
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider" index="1"]
-layout_mode = 1
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider/HSplitContainer" index="0"]
-layout_mode = 2
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/ROASlider/HSplitContainer" index="1"]
-layout_mode = 2
-
-[node name="ASFSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="ASFSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 offset_top = 117.0
 offset_bottom = 152.0
 property_name = "attraction_scaling_factor"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider" index="0"]
-layout_mode = 1
 text = "Attraction Scaling Factor"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider" index="1"]
-layout_mode = 1
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider/HSplitContainer" index="0"]
-layout_mode = 2
 min_value = 0.1
 step = 0.0
 value = 0.1
 exp_edit = true
 
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/ASFSlider/HSplitContainer" index="1"]
-layout_mode = 2
-
-[node name="MoveSpeedSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="MoveSpeedSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 offset_top = 156.0
 offset_bottom = 191.0
 property_name = "move_speed"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider" index="0"]
-layout_mode = 1
 text = "Move Speed"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider" index="1"]
-layout_mode = 1
-
-[node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider/HSplitContainer" index="0"]
-layout_mode = 2
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider/HSplitContainer" index="1"]
-layout_mode = 2
-
-[node name="TurnSpeedSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="TurnSpeedSlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 offset_top = 195.0
 offset_bottom = 230.0
 property_name = "turn_speed"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider" index="0"]
-layout_mode = 1
 text = "Turn Speed"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider" index="1"]
-layout_mode = 1
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider/HSplitContainer" index="0"]
-layout_mode = 2
 max_value = 6.283
 step = 0.0
 
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider/HSplitContainer" index="1"]
-layout_mode = 2
-
-[node name="BSASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="BSASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 offset_top = 234.0
 offset_bottom = 269.0
 property_name = "blind_spot_angle"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider" index="0"]
-layout_mode = 1
 text = "Blind Spot Angle"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider" index="1"]
-layout_mode = 1
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider/HSplitContainer" index="0"]
-layout_mode = 2
 max_value = 3.142
 step = 0.0
 
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/BSASlider/HSplitContainer" index="1"]
-layout_mode = 2
-
-[node name="MNASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("5_amd6w")]
-layout_mode = 2
+[node name="MNASlider" parent="ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
 offset_top = 273.0
 offset_bottom = 308.0
 property_name = "max_noise_angle"
 
 [node name="GroupTitle" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider" index="0"]
-layout_mode = 1
 text = "Max Nosie Angle"
 
-[node name="HSplitContainer" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider" index="1"]
-layout_mode = 1
-
 [node name="Slider" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider/HSplitContainer" index="0"]
-layout_mode = 2
 max_value = 6.283
 step = 0.0
-
-[node name="ValueText" parent="ControlGUI/SidePanel/VBoxContainer/MNASlider/HSplitContainer" index="1"]
-layout_mode = 2
 
 [connection signal="end_step" from="." to="ControlGUI" method="_on_simulation_end_step"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

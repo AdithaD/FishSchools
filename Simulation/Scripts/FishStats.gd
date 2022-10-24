@@ -26,3 +26,24 @@ func to_json() -> Dictionary:
 	}
 	
 	return json_dict
+
+func _to_string():
+	return JSON.stringify(to_json())
+
+func _init(p_roa = 300, p_roo = 150, p_ror =20, p_bsa = PI/3, p_mna = PI/4, p_asf = 1, p_ms = 120, p_ts = 1 * PI):
+	range_of_attraction = p_roa
+	range_of_orientation = p_roo
+	range_of_repulsion = p_ror
+	
+	blind_spot_angle = p_bsa
+	max_noise_angle = p_mna
+	
+	attraction_scaling_factor = p_asf
+	
+	move_speed = p_ms
+	turn_speed = p_ts
+
+static func init_from_list(values):
+	var new = FishStats.new(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],)
+
+	return new

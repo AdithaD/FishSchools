@@ -3,7 +3,7 @@ class_name FishAgent
 
 @export var stats : FishStats
 
-@onready var simulation = get_node("/root/Simulation") as FishSimulation
+@onready var simulation = find_parent("Simulation") as FishSimulation
 
 var direction = Vector2(0,0)
 

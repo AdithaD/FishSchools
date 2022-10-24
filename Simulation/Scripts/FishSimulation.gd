@@ -15,7 +15,6 @@ class_name FishSimulation
 @export var discrete_time_step = 0.1
 @export var number_of_steps = 100
 
-
 var bounds : Rect2i
 var agents : Array[FishAgent] = []
 
@@ -31,10 +30,10 @@ var current_time = 0
 
 var deltas = []
 
-var ended = false
+var has_simulation_ended = false
 
 signal end_step(avg_dist_to_com, global_vec_divergence, local_vec_divergence, swirling_factor)
-
+signal simulation_ended
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var bounds_pos = get_viewport_rect().size / 2 - bounds_size / 2
@@ -42,27 +41,29 @@ func _ready():
 	
 	print(bounds)
 	
+	
+func start_simulation():
 	for i in range(amount_of_fish):
-		var new_x = randi_range(bounds.position.x, bounds.position.x + bounds.size.x)
-		var new_y = randi_range(bounds.position.y, bounds.position.y + bounds.size.y)
-	
-		var new_direction = Vector2(1,0).rotated(randf() * 2.0 * PI)
-	
-		var new_fish = fish_agent.instantiate()
-		agents.append(new_fish)
+			var new_x = randi_range(bounds.position.x, bounds.position.x + bounds.size.x)
+			var new_y = randi_range(bounds.position.y, bounds.position.y + bounds.size.y)
 		
-		new_fish.stats = fish_stats
+			var new_direction = Vector2(1,0).rotated(randf() * 2.0 * PI)
 		
-		new_fish.position = Vector2(new_x, new_y)
-		new_fish.direction = new_direction
-		
-		$Agents.add_child(new_fish)
-		
+			var new_fish = fish_agent.instantiate()
+			agents.append(new_fish)
+			
+			new_fish.stats = fish_stats
+			
+			new_fish.position = Vector2(new_x, new_y)
+			new_fish.direction = new_direction
+			
+			$Agents.add_child(new_fish)
+			
 	if is_discrete_time_simulation:
 		$Timer.wait_time = discrete_time_step
 		$Timer.start()
-	pass # Replace with function body.
-
+	pass
+	
 func apply_bounds_control(fish, desired_direction) -> Vector2:
 	if not bounds.has_point(fish.position) and should_apply_bounds:
 		var center = Vector2(bounds.size / 2 + bounds.position)
@@ -84,7 +85,7 @@ func calculate_avg_dist_to_com_metric() -> float:
 	for i in agents:
 		sum += com.distance_to(i .position)
 	
-	return sum / len(agents)
+	return float(sum) / len(agents)
 	pass
 	
 func calculate_vector_divergence_metric() -> float:
@@ -137,10 +138,10 @@ func calculate_swirling_metric() -> float:
 		avg_dot += abs(i.direction.dot((i.position - com).normalized()))
 	
 
-	return abs(avg_dot / len(agents))
+	return 1 - avg_dot / len(agents)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):	
-	if not ended and not is_discrete_time_simulation:
+	if not has_simulation_ended and not is_discrete_time_simulation:
 		if current_time < time_duration:
 			current_time += delta * time_scale
 			for i in agents:
@@ -186,7 +187,7 @@ func on_end_step():
 	pass
 
 func _on_timer_timeout():
-	if not ended:
+	if not has_simulation_ended:
 		if current_step < number_of_steps:
 			for i in agents:
 				i.step(discrete_time_step)
@@ -201,7 +202,8 @@ func end_simulation():
 	$Timer.stop()
 	
 	export_simulation_data()
-	ended = true
+	has_simulation_ended = true
+	emit_signal("simulation_ended")
 
 func export_simulation_data() -> void:
 	var time_data ={}
@@ -223,7 +225,12 @@ func export_simulation_data() -> void:
 		"fish_stats": fish_stats.to_json(),
 		"metrics" : metrics
 	}
-	var document_name = "user://experiement_results_%s.json" % Time.get_time_string_from_system().replace(":","_")
+	
+	var experiment_name = "default"
+	if get_parent().has_method("get_experiment_name"):
+		experiment_name = get_parent().get_experiment_name()
+	
+	var document_name = "user://exp_%s_sim_%s.json" %[experiment_name, Time.get_time_string_from_system().replace(":","_")]
 	print(document_name)
 	var f = FileAccess.open(document_name, FileAccess.WRITE)
 	

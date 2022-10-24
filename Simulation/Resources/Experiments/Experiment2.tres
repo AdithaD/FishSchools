@@ -1,0 +1,79 @@
+[gd_resource type="Resource" load_steps=11 format=3 uid="uid://bo8oqkf63qevn"]
+
+[ext_resource type="Script" path="res://Scripts/ExperimentStats.gd" id="1_7biuc"]
+[ext_resource type="Script" path="res://Scripts/VariableRange.gd" id="1_vdm6s"]
+
+[sub_resource type="Resource" id="Resource_e3dss"]
+script = ExtResource("1_vdm6s")
+default = 1.0
+is_control = true
+min_value = 0.0
+max_value = 1.0
+step = 0.0
+
+[sub_resource type="Resource" id="Resource_qkvdr"]
+script = ExtResource("1_vdm6s")
+default = 2.356
+is_control = false
+min_value = 0.0
+max_value = 5.495
+step = 1.57
+
+[sub_resource type="Resource" id="Resource_dfcob"]
+script = ExtResource("1_vdm6s")
+default = 0.785
+is_control = false
+min_value = 0.0
+max_value = 3.142
+step = 0.524
+
+[sub_resource type="Resource" id="Resource_p5xr5"]
+script = ExtResource("1_vdm6s")
+default = 150.0
+is_control = true
+min_value = 0.0
+max_value = 1.0
+step = 0.1
+
+[sub_resource type="Resource" id="Resource_hk17i"]
+script = ExtResource("1_vdm6s")
+default = 300.0
+is_control = true
+min_value = 0.0
+max_value = 0.0
+step = 0.0
+
+[sub_resource type="Resource" id="Resource_87v14"]
+script = ExtResource("1_vdm6s")
+default = 150.0
+is_control = true
+min_value = 0.0
+max_value = 0.0
+step = 0.0
+
+[sub_resource type="Resource" id="Resource_lh600"]
+script = ExtResource("1_vdm6s")
+default = 25.0
+is_control = true
+min_value = 0.0
+max_value = 0.0
+step = 0.0
+
+[sub_resource type="Resource" id="Resource_r108v"]
+script = ExtResource("1_vdm6s")
+default = 20.0
+is_control = false
+min_value = 0.785
+max_value = 20.0
+step = 5.0
+
+[resource]
+script = ExtResource("1_7biuc")
+range_of_attraction = SubResource("Resource_hk17i")
+range_of_orientation = SubResource("Resource_87v14")
+range_of_repulsion = SubResource("Resource_lh600")
+blind_spot_angle = SubResource("Resource_qkvdr")
+max_noise_angle = SubResource("Resource_dfcob")
+attraction_scaling_factor = SubResource("Resource_e3dss")
+move_speed = SubResource("Resource_p5xr5")
+turn_speed = SubResource("Resource_r108v")
