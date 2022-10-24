@@ -44,6 +44,5 @@ func _init(p_roa = 300, p_roo = 150, p_ror =20, p_bsa = PI/3, p_mna = PI/4, p_as
 	turn_speed = p_ts
 
 static func init_from_list(values):
-	var new = FishStats.new(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7],)
-
+	var new = FishStats.new(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7])
 	return new

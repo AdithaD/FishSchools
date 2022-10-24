@@ -16,16 +16,20 @@ func _ready():
 	
 	experiment_schedule = experiment_stats.generate_experiment_schedule()
 	
+	print('Experiment starting...')
+	
 	start_next_simulation()
 	
 	pass # Replace with function body.
 
 func start_next_simulation() -> void:
+	print('Starting simulation %d our of %d' % [current_experiment + 1, len(experiment_schedule)])
 	var new_simulation = simulation.instantiate() as FishSimulation
 	new_simulation.connect("simulation_ended", on_simulation_ended)
 	
-	var new_stats = FishStats.new()
-	new_stats.init_from_list(experiment_schedule[current_experiment])
+	var new_stats = FishStats.init_from_list(experiment_schedule[current_experiment])
+	
+	print(new_stats)
 	
 	new_simulation.fish_stats = new_stats
 	

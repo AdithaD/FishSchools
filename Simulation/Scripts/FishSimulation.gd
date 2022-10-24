@@ -8,12 +8,21 @@ class_name FishSimulation
 @export var should_apply_bounds = true
 @export var bounds_size : Vector2
 @export var time_duration = 100.0
-@export var time_scale = 1
+@export var time_scale : int = 1
 
 @export_group("Discrete Time")
 @export var is_discrete_time_simulation = true
 @export var discrete_time_step = 0.1
 @export var number_of_steps = 100
+@export var auto_start = false
+
+@export_group("Metrics")
+@export var average_distance_to_centre_of_mass = false
+@export var global_vec_divergence = false
+@export var local_vec_divergence = false
+@export var swirling_factor = false
+
+
 
 var bounds : Rect2i
 var agents : Array[FishAgent] = []
@@ -41,6 +50,8 @@ func _ready():
 	
 	print(bounds)
 	
+	if auto_start:
+		start_simulation()
 	
 func start_simulation():
 	for i in range(amount_of_fish):
@@ -171,15 +182,26 @@ func _draw():
 	draw_circle(com, 5, Color.DARK_ORANGE)
 	
 func on_end_step():
-	var avg_dist_to_com = calculate_avg_dist_to_com_metric()
-	var global_vec_divergence = calculate_vector_divergence_metric()
-	var local_vec_divergence = calculate_local_vector_divergence_metric()
-	var swirling_factor = calculate_swirling_metric()
+	var avg_dist_to_com = -1
+	var global_vec_divergence = -1
+	var local_vec_divergence = -1
+	var swirling_factor = -1
 	
-	metrics["avg_dist_to_com"].append(avg_dist_to_com)
-	metrics["global_vec_divergence"].append(global_vec_divergence)
-	metrics["local_vec_divergence"].append(local_vec_divergence)
-	metrics["swirling_factor"].append(swirling_factor)
+	if average_distance_to_centre_of_mass:
+		avg_dist_to_com = calculate_avg_dist_to_com_metric()
+		metrics["avg_dist_to_com"].append(avg_dist_to_com)
+	
+	if global_vec_divergence:
+		global_vec_divergence = calculate_vector_divergence_metric()
+		metrics["global_vec_divergence"].append(global_vec_divergence)
+	
+	if local_vec_divergence:
+		local_vec_divergence = calculate_local_vector_divergence_metric()
+		metrics["local_vec_divergence"].append(local_vec_divergence)
+	
+	if swirling_factor:
+		swirling_factor = calculate_swirling_metric()
+		metrics["swirling_factor"].append(swirling_factor)
 
 	emit_signal("end_step", avg_dist_to_com, global_vec_divergence, local_vec_divergence, swirling_factor)	
 	queue_redraw()
@@ -189,10 +211,10 @@ func on_end_step():
 func _on_timer_timeout():
 	if not has_simulation_ended:
 		if current_step < number_of_steps:
-			for i in agents:
-				i.step(discrete_time_step)
-			
-			on_end_step()
+			for t in range(time_scale):
+				for i in agents:
+					i.step(discrete_time_step)
+				on_end_step()
 		else:
 			end_simulation()
 		pass # Replace with function body.

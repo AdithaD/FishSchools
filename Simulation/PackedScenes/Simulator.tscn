@@ -1,20 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://cjs17lq1ycowq"]
+[gd_scene load_steps=6 format=3 uid="uid://cjs17lq1ycowq"]
 
 [ext_resource type="Script" path="res://Scripts/FishSimulation.gd" id="1_mskyh"]
 [ext_resource type="PackedScene" uid="uid://cwo1vflwk1dxk" path="res://PackedScenes/Fish.tscn" id="2_b248h"]
-[ext_resource type="Resource" uid="uid://dbhxp0lfmuhv0" path="res://Resources/FishStats/DefaultFishStats.tres" id="3_lihjg"]
 [ext_resource type="Script" path="res://Scripts/ControlGUI.gd" id="4_62s7w"]
 [ext_resource type="Script" path="res://Scripts/Chart.gd" id="5_o5jso"]
 [ext_resource type="PackedScene" path="res://PackedScenes/StatSlider.tscn" id="6_eyy6u"]
 
 [node name="Simulation" type="Node2D"]
 script = ExtResource("1_mskyh")
-amount_of_fish = 300
+amount_of_fish = 150
 fish_agent = ExtResource("2_b248h")
-fish_stats = ExtResource("3_lihjg")
 bounds_size = Vector2(800, 800)
 time_duration = 1.0
-number_of_steps = 10
+auto_start = true
 
 [node name="Agents" type="Node2D" parent="."]
 
