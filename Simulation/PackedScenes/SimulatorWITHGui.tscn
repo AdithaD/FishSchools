@@ -1,0 +1,458 @@
+[gd_scene load_steps=8 format=3 uid="uid://byklth7gtmain"]
+
+[ext_resource type="Script" path="res://Scripts/FishSimulation.gd" id="1_mskyh"]
+[ext_resource type="PackedScene" uid="uid://cwo1vflwk1dxk" path="res://PackedScenes/Fish.tscn" id="2_b248h"]
+[ext_resource type="Resource" uid="uid://dbhxp0lfmuhv0" path="res://Resources/FishStats/DefaultFishStats.tres" id="3_bofm2"]
+[ext_resource type="Script" path="res://Scripts/ControlGUI.gd" id="4_62s7w"]
+[ext_resource type="Script" path="res://Scripts/Chart.gd" id="5_o5jso"]
+[ext_resource type="PackedScene" uid="uid://tncrwb5guvjt" path="res://PackedScenes/StatSlider.tscn" id="6_eyy6u"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2h60v"]
+font_size = 24
+
+[node name="Simulation" type="Node2D"]
+script = ExtResource("1_mskyh")
+amount_of_fish = 125
+fish_agent = ExtResource("2_b248h")
+fish_stats = ExtResource("3_bofm2")
+bounds_size = Vector2(1000, 1000)
+time_duration = 1.0
+number_of_steps = 300
+auto_start = true
+average_distance_to_centre_of_mass = true
+swirling_factor = true
+
+[node name="Agents" type="Node2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ControlGUI" type="Control" parent="CanvasLayer"]
+custom_minimum_size = Vector2i(1152, 648)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = 1151.0
+offset_bottom = 650.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+auto_translate = false
+script = ExtResource("4_62s7w")
+
+[node name="Metrics" type="HBoxContainer" parent="CanvasLayer/ControlGUI"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -608.0
+offset_top = -200.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ControlGUI/Metrics"]
+custom_minimum_size = Vector2i(200, 200)
+layout_mode = 2
+offset_right = 200.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+
+[node name="COMMetricChart" type="Control" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer"]
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 10.0
+offset_right = 190.0
+offset_bottom = 140.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
+colour = Color(0.788235, 0.313726, 0.658824, 1)
+
+[node name="StdErrorLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer/COMMetricChart"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = 177.0
+offset_right = -9.0
+offset_bottom = 200.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer/COMMetricChart"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_right = 0.5
+offset_bottom = 23.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Dist. to CoM"
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/ControlGUI/Metrics"]
+visible = false
+custom_minimum_size = Vector2i(200, 200)
+layout_mode = 2
+offset_left = 204.0
+offset_right = 404.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+
+[node name="VecDivergeChart" type="Control" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer2"]
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 10.0
+offset_right = 190.0
+offset_bottom = 140.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
+max_y_value = 1
+colour = Color(0.403922, 0.752941, 0.854902, 1)
+
+[node name="StdErrorLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer2/VecDivergeChart"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = 167.0
+offset_right = -9.0
+offset_bottom = 190.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer2/VecDivergeChart"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_right = 0.5
+offset_bottom = 23.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Dist. to CoM"
+
+[node name="PanelContainer3" type="PanelContainer" parent="CanvasLayer/ControlGUI/Metrics"]
+custom_minimum_size = Vector2i(200, 200)
+layout_mode = 2
+offset_left = 204.0
+offset_right = 404.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+
+[node name="LocalVecDivergeChart" type="Control" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer3"]
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 10.0
+offset_right = 190.0
+offset_bottom = 140.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
+max_y_value = 1
+colour = Color(0.741176, 0.776471, 0, 1)
+
+[node name="StdErrorLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer3/LocalVecDivergeChart"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = 177.0
+offset_right = -9.0
+offset_bottom = 200.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer3/LocalVecDivergeChart"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_right = 0.5
+offset_bottom = 23.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Local Vec Convergence"
+
+[node name="PanelContainer4" type="PanelContainer" parent="CanvasLayer/ControlGUI/Metrics"]
+custom_minimum_size = Vector2i(200, 200)
+layout_mode = 2
+offset_left = 408.0
+offset_right = 608.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+
+[node name="SwirlingChart" type="Control" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer4"]
+custom_minimum_size = Vector2i(180, 140)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 10.0
+offset_right = 190.0
+offset_bottom = 140.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+script = ExtResource("5_o5jso")
+max_y_value = 1
+colour = Color(0.917647, 0.686275, 0.486275, 1)
+
+[node name="StdErrorLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer4/SwirlingChart"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = 177.0
+offset_right = -9.0
+offset_bottom = 200.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/ControlGUI/Metrics/PanelContainer4/SwirlingChart"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_right = 0.5
+offset_bottom = 23.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Swirling Factor"
+
+[node name="SidePanel" type="Control" parent="CanvasLayer/ControlGUI"]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 508.0
+offset_bottom = 882.0
+
+[node name="Panel" type="Panel" parent="CanvasLayer/ControlGUI/SidePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -215.0
+offset_bottom = -351.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ControlGUI/SidePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 6.0
+offset_right = -221.0
+offset_bottom = -427.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RORSlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_right = 287.0
+offset_bottom = 52.0
+size_flags_vertical = 3
+property_name = "range_of_repulsion"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/RORSlider" index="0"]
+text = "Range of Repulsion
+"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/RORSlider/HSplitContainer" index="0"]
+offset_top = 36.0
+offset_right = 215.0
+offset_bottom = 52.0
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/RORSlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 52.0
+label_settings = SubResource("LabelSettings_2h60v")
+
+[node name="ROOSlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_top = 56.0
+offset_right = 287.0
+offset_bottom = 109.0
+size_flags_vertical = 3
+property_name = "range_of_orientation"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROOSlider" index="0"]
+text = "Range of Orientation
+"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROOSlider/HSplitContainer" index="0"]
+offset_top = 37.0
+offset_right = 215.0
+offset_bottom = 53.0
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROOSlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 53.0
+
+[node name="ROASlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_top = 113.0
+offset_right = 287.0
+offset_bottom = 165.0
+size_flags_vertical = 3
+property_name = "range_of_attraction"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROASlider" index="0"]
+text = "Range of Attraction
+"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROASlider/HSplitContainer" index="0"]
+offset_top = 36.0
+offset_right = 215.0
+offset_bottom = 52.0
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROASlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 52.0
+
+[node name="ASFSlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_top = 169.0
+offset_right = 287.0
+offset_bottom = 222.0
+size_flags_vertical = 3
+property_name = "attraction_scaling_factor"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ASFSlider" index="0"]
+text = "Attraction Scaling Factor"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ASFSlider/HSplitContainer" index="0"]
+offset_top = 37.0
+offset_right = 215.0
+offset_bottom = 53.0
+min_value = 0.1
+step = 0.0
+value = 0.1
+exp_edit = true
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ASFSlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 53.0
+
+[node name="MoveSpeedSlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_top = 226.0
+offset_right = 287.0
+offset_bottom = 279.0
+size_flags_vertical = 3
+property_name = "move_speed"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider" index="0"]
+text = "Move Speed"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider/HSplitContainer" index="0"]
+offset_top = 37.0
+offset_right = 215.0
+offset_bottom = 53.0
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 53.0
+
+[node name="TurnSpeedSlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_top = 283.0
+offset_right = 287.0
+offset_bottom = 335.0
+size_flags_vertical = 3
+property_name = "turn_speed"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider" index="0"]
+text = "Turn Speed"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider/HSplitContainer" index="0"]
+offset_top = 36.0
+offset_right = 215.0
+offset_bottom = 52.0
+max_value = 6.283
+step = 0.0
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 52.0
+
+[node name="BSASlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_top = 339.0
+offset_right = 287.0
+offset_bottom = 392.0
+size_flags_vertical = 3
+property_name = "blind_spot_angle"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/BSASlider" index="0"]
+text = "Blind Spot Angle"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/BSASlider/HSplitContainer" index="0"]
+offset_top = 37.0
+offset_right = 215.0
+offset_bottom = 53.0
+max_value = 3.142
+step = 0.0
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/BSASlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 53.0
+
+[node name="MNASlider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer" instance=ExtResource("6_eyy6u")]
+layout_mode = 2
+offset_top = 396.0
+offset_right = 287.0
+offset_bottom = 449.0
+size_flags_vertical = 3
+property_name = "max_noise_angle"
+
+[node name="GroupTitle" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MNASlider" index="0"]
+text = "Max Nosie Angle"
+
+[node name="Slider" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MNASlider/HSplitContainer" index="0"]
+offset_top = 37.0
+offset_right = 215.0
+offset_bottom = 53.0
+max_value = 6.283
+step = 0.0
+
+[node name="ValueText" parent="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MNASlider/HSplitContainer" index="1"]
+offset_left = 227.0
+offset_right = 287.0
+offset_bottom = 53.0
+
+[node name="Camera2d" type="Camera2D" parent="."]
+offset = Vector2(600, 400)
+current = true
+zoom = Vector2(0.5, 0.5)
+
+[connection signal="end_step" from="." to="CanvasLayer/ControlGUI" method="_on_simulation_end_step"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/RORSlider"]
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROOSlider"]
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ROASlider"]
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/ASFSlider"]
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MoveSpeedSlider"]
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/TurnSpeedSlider"]
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/BSASlider"]
+[editable path="CanvasLayer/ControlGUI/SidePanel/VBoxContainer/MNASlider"]

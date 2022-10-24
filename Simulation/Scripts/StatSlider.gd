@@ -14,6 +14,7 @@ func _process(delta):
 	pass
 
 func _on_slider_value_changed(value):
+	
 	simulation.fish_stats.set(property_name, value)
 	$HSplitContainer/ValueText.text = str(value)
 	pass # Replace with function body.

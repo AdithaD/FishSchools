@@ -12,15 +12,17 @@ func get_default():
 
 func get_values() -> Array[float]:
 	if not is_control:
-		var values = []
+		var values = [min_value]
 		var latest = min_value
-		while latest < max_value:
+		while latest <= max_value:
 			latest += step
 			values.append(latest)
 		
+		if get_default() != min_value:
+			values.append(get_default())
 		return values
 	else :
-		return []
+		return [get_default()]
 
 func _init(p_default = 0.5, p_is_control = true, p_min = 0.0, p_max = 1.0, p_step= 0.1):
 	default = p_default

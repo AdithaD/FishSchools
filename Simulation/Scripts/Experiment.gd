@@ -4,7 +4,7 @@ var simulation = preload("res://PackedScenes/Simulator.tscn")
 
 @export var experiment_stats : ExperimentStats
 @export var experiment_name : String
-
+@export var reverse =true
 var current_experiment = 0
 
 var experiment_schedule : Array = []
@@ -27,11 +27,18 @@ func start_next_simulation() -> void:
 	var new_simulation = simulation.instantiate() as FishSimulation
 	new_simulation.connect("simulation_ended", on_simulation_ended)
 	
-	var new_stats = FishStats.init_from_list(experiment_schedule[current_experiment])
+	var new_stats = FishStats.new()
+	
+	var next_index  = current_experiment
+	
+	if reverse:
+		next_index = len(experiment_schedule) - 1 - current_experiment
+	
+	new_stats.init_from_list(experiment_schedule[next_index])
 	
 	print(new_stats)
 	
-	new_simulation.fish_stats = new_stats
+	new_simulation.set_fish_stats(new_stats)
 	
 	add_child(new_simulation, true)
 	new_simulation.start_simulation()

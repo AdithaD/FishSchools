@@ -43,6 +43,16 @@ func _init(p_roa = 300, p_roo = 150, p_ror =20, p_bsa = PI/3, p_mna = PI/4, p_as
 	move_speed = p_ms
 	turn_speed = p_ts
 
-static func init_from_list(values):
-	var new = FishStats.new(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7])
-	return new
+func init_from_list(values):
+	range_of_attraction =values[0]
+	range_of_orientation = values[1]
+	range_of_repulsion = values[2]
+	
+	blind_spot_angle = values[3]
+	max_noise_angle =values[4]
+	
+	attraction_scaling_factor = values[5]
+	
+	move_speed = values[6]
+	turn_speed = values[7]
+
